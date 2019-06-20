@@ -198,7 +198,7 @@
 
 
 ### Redshift Spectrum
-    * Query Exabytes of unstructe data in S3 withou laoding
+    * Query Exabytes of unstructe data in S3 without laoding
     * limitless concurrency
     * Horizantal Scaling
     * Separate storgage & compute resources
@@ -245,7 +245,7 @@
         * S3 requires a minite fiele and IAM Roles
     * UNLOAD Command
         * Unload from a table into files in S3
-    * Enhanced VPC routing
+    * Enhanced VPC routing : VPC flow logs is used to monitor all COPY and UNLOAD traffic of the cluster that moves in and out of the VPC. 
 
 * Redshift copy granst for coress region sanpshot coipies
     * les sa you have akms encrypte reshfit cluster and a snspahso of it
@@ -283,3 +283,65 @@
         * ETL First with EMR etc
     * BLOB data
         * store referece to large binary files in S3, not the files themselves
+
+### Excercise
+                Server Logs -> Kinesis Data Firehose -< Amazon S3  -> Glue -> Athena (Serverlesss)
+                Server Logs -> Kinesis Data Firehose -< Amazon S3  -> Redshif -> Amazon QuickSight (Managed)
+
+* Amazon Redshift
+    * Launc Cluster
+        * Cluster Idnetifer
+        * Databae Name : dev
+        * port : 5439
+        * username : awsusers
+        * Password
+    * Node Type:
+        * dc2.large
+        * SingleNode
+    * Additional Config
+        * Default VPC
+        * Encryption : None, KMS , HSM
+        * Cluseer subnet group
+        * Publicy accessible
+    * VPC Security group
+        * create a securrity group
+        * add inbout rules : add route to 22,5439
+    * Create IAM Role
+        * AmazonS3ReadOnlyAccess
+        * AWSGlueConsoleFullAccess
+    * Query Editior
+        * select csluster, db,user,password and connect
+        * interactive query editor
+        * create schema from Glue
+        create external schema orderlog_schema from data cataglog
+        database 'orderlogs'
+        iam_role 'arn:'
+        region 'us-east-1'
+        * This pulls the schema from Glue and loads all the schema files
+        * run the following query
+            select description,count(*) from orderlog_schema.orderlogs_sunlogedu where coutnry='France' and year = '2019' and month='02' group by description;
+        * It works like Athena but it Runs on AWS Redshift Managed Warehouse
+        * This is useful,if we need to join the data sitting in Redshift warehouse and S3
+### RDS and Aurora
+* Hosted relation database
+    * Aurora
+    * MYSQL
+    * PostgreSQL
+    * MariabDB
+    * Oracle
+    * SQL Server
+* This is not for big data
+* ACID Compliant
+* Aurora
+    * MySQL and PostGreSQL - Compatible
+    * Upto 5x faster mysql, 3x faster thant psotgresql
+    * 1/10 the cost of commerical datbase
+    * upt 64 TB per db instacne
+    * upto 15 read replicas
+    * continou backtup tp s3
+    * replication accessso abialbe ozone
+    * automatic scaling
+* Aurora Security
+    * VPN Network istlation
+    * AT REST with KMS
+    * In Transiw tih SSL
