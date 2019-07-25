@@ -33,4 +33,4 @@ S3
 ### Glue
     Source: Dyna odB, SR, JDBC ===> Glue (crawler) ==> Create data catglog
 
-### EMER
+### EMR
